@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture Style Recognition</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+</head>
+<body>
+<div class="container-fluid">
+    <!-- Sidebar -->
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <h2 class="text-center mt-3">Volodymyr Zaiets</h2>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <!-- Header -->
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Architecture Style Prediction</h1>
+            </div>
+
+            <!-- Upload Section -->
+            <h2>Upload an Image for Prediction</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="image" accept="image/*" required>
+                <button type="submit" class="btn btn-primary">Predict</button>
+            </form>
+
+            {% if predicted_style %}
+                <!-- Stats Row -->
+                <div class="row my-4">
+                    <div class="col-md-4">
+                        <div class="card text-white bg-success mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Validation Loss</h5>
+                                <p class="card-text">{{ validation_loss }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white bg-info mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Validation Accuracy</h5>
+                                <p class="card-text">{{ validation_accuracy }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prediction Result and Chart -->
+                <div id="results-container" class="my-4">
+                    <p><strong>Predicted Style:</strong> {{ predicted_style }}</p>
+
+                    <!-- Display the uploaded image -->
+                    <div id="uploaded-image-container" class="mb-3">
+                        <h3>Uploaded Image</h3>
+                        {% if image_base64 %}
+                            <img src="data:image/jpeg;base64,{{ image_base64 }}" alt="Uploaded Image" style="max-width: 100%; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
+                        {% else %}
+                            <p>No image available.</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Display Prediction Chart -->
+                    <div id="chart-container">
+                        <h3>Prediction Chart</h3>
+                        {% if chart_base64 %}
+                            <img src="data:image/png;base64,{{ chart_base64 }}" alt="Prediction Chart" style="max-width: 100%; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
+                        {% else %}
+                            <p>No chart available.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
