@@ -23,7 +23,7 @@
 
 1. Клонуйте репозиторій:
    ```bash
-   git clone <URL-репозиторію>
+   git clone <https://github.com/v000zaiets/NeuralNetwork>
 2. Встановіть залежності:
 bash
 Копіювати код
